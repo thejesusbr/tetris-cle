@@ -22,9 +22,10 @@ int nFieldHeight = 18;           // Height of the gaming field
 unsigned char *pField = nullptr; // The gaming fiels will be stored as a char array
 uint nScreenWidth = 42;          // Width of the main window
 uint nScreenHeight = 23;         // Height of the main window
-WINDOW *screen, 
+WINDOW *screen,                  // Windows used to display stuff
        *scoreScreen, 
-       *nextPieceScreen;         // Windows used to display stuff
+       *nextPieceScreen,
+       *specialScreen;         
 int ch;                          // Variable to manage user input
 
 // HELPER FUNCTIONS ===================================================================
@@ -142,12 +143,16 @@ int main(int argc, char** argv) {
     
   // Creating a window to display the score
   scoreScreen = create_newwin(3, 12, 2, 17);
-  mvwprintw(scoreScreen, 0, 2, "Score");
+  mvwprintw(scoreScreen, 0, 1, "Score");
   mvwprintw(scoreScreen, 1, 10, "0");
 
   // Creating a window to display the next piece
   nextPieceScreen = create_newwin(7, 8, 5, 17);
-  mvwprintw(nextPieceScreen, 0, 2, "Next");
+  mvwprintw(nextPieceScreen, 0, 1, "Next");
+
+  // Creating a window to display available specials
+  specialScreen = create_newwin(3, 9, 5, 26);
+  mvwprintw(specialScreen, 0, 1, "Special");
 
   // Game state variables
   int nCurrentPiece = rand() % 7;      // We initialize the current piece randomly
@@ -171,6 +176,10 @@ int main(int argc, char** argv) {
   std::vector<int> vLines; // A vector to store the Y coordinate of full lines
 
   uint nScore = 0; // The game score
+
+  uint nSpecial = 0; // 'Swap' special power, allows you to swap current for next piece
+  uint nRest = 0;
+  uint nScoreCounter = 0;
 
   std::chrono::milliseconds gameTick(16);  // The game ticks at 16ms (roughly 60fps)
   std::chrono::milliseconds lineWait(400); // A pause of roughly half a second to display a line removal animation
@@ -208,6 +217,7 @@ int main(int argc, char** argv) {
     // GAME LOGIC ===============================================================================
 
     // Checking the input and moving the piece accordingly
+    int temp;
     switch(ch) {
       case 'p':
       case 'P': // The player wants to pause the game
@@ -238,6 +248,14 @@ int main(int argc, char** argv) {
                 // holds down the key, so it will always rotate once
         nCurrentRotation += (!bRotateHold && DoesPieceFit(nCurrentPiece, nCurrentRotation + 1, nCurrentX, nCurrentY)) ? 1 : 0;
         bRotateHold = true;
+        break;
+      case ' ': // Space key uses the special power, that swaps current and next piece
+        if (nSpecial > 0){
+          nSpecial--;
+          temp = nCurrentPiece;
+          nCurrentPiece = nNextPiece;
+          nNextPiece = temp;
+        }
         break;
       default: // Unblock rotation, if the rotation key is not hold down
         bRotateHold = false;
@@ -300,7 +318,7 @@ int main(int argc, char** argv) {
 
         // Each piece gives 25 points when locked to the field
         nScore += 25;
-
+        
         // Removing lines gives 2^n * 100 points, so the more lines removed, greater the reward
         if (!vLines.empty()) nScore += (1 << vLines.size()) * 100;
 
@@ -315,6 +333,13 @@ int main(int argc, char** argv) {
         bGameOver = !DoesPieceFit(nCurrentPiece, nCurrentRotation, nCurrentX, nCurrentY);
       }
       nSpeedCounter = 0; // As the piece has moved, reset the counter
+    }
+
+    nRest = (nScore / 1000);
+    if (nRest > nScoreCounter){
+      int nGrowth = nRest - nScoreCounter;
+      nSpecial += nSpecial < 3 ? nGrowth : 0;
+      nScoreCounter += nGrowth;
     }
 
     // RENDER ===============================================================================================
@@ -360,6 +385,11 @@ int main(int argc, char** argv) {
     int nDigits = (int) log10(nScore) + 1; // Trick to count how many digits the score has
     mvwprintw(scoreScreen, 1, 11 - nDigits, "%d", nScore); // The alignment is adjusted for the number of digits
 
+    // Draw special
+    mvwprintw(specialScreen, 1, 1, "       ");
+    for(int i = 0; i < nSpecial; i++)
+      mvwaddch(specialScreen, 1, 6-2*i, '*');
+
     // If we got any full line, vLines will not be empty. Time to remove them
     if(!vLines.empty()) {
       wrefresh(screen); // Refresh screen to show the line removal animation
@@ -380,12 +410,14 @@ int main(int argc, char** argv) {
     // Display the current frame. In this case, just refresh the windows
     wrefresh(screen);
     wrefresh(scoreScreen);
-    wrefresh(nextPieceScreen);        
+    wrefresh(nextPieceScreen);   
+    wrefresh(specialScreen);     
   }
 
   // When the loop breaks, the game is over. Destroy the windows
   destroy_win(scoreScreen);
   destroy_win(nextPieceScreen);
+  destroy_win(specialScreen);
   destroy_win(screen);
   refresh(); // Clear everything
   endwin(); // End curses mode and print the score before leaving
