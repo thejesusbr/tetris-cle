@@ -4,6 +4,7 @@
 #include <vector>
 #include <ncurses.h>
 #include <cmath>
+#include <random>
 
 // MACROS =============================================================================
 
@@ -139,7 +140,7 @@ int main(int argc, char** argv) {
   mvwaddch(screen, nScreenHeight - 3, 4, ACS_DARROW);
   mvwaddch(screen, nScreenHeight - 3, 6, ACS_RARROW);
   mvwprintw(screen, nScreenHeight - 3, 8, "to move, z to rotate, p to pause,");
-  mvwprintw(screen, nScreenHeight - 2, 2, "q to quit.");
+  mvwprintw(screen, nScreenHeight - 2, 2, "space to use special, q to quit.");
     
   // Creating a window to display the score
   scoreScreen = create_newwin(3, 12, 2, 17);
@@ -154,9 +155,13 @@ int main(int argc, char** argv) {
   specialScreen = create_newwin(3, 9, 5, 26);
   mvwprintw(specialScreen, 0, 1, "Special");
 
+  // Initializing random engine
+  std::random_device generator;
+  std::uniform_int_distribution<int> distribution(0,6);
+
   // Game state variables
-  int nCurrentPiece = rand() % 7;      // We initialize the current piece randomly
-  int nNextPiece = rand() % 7;         // And also the next piece as well
+  int nCurrentPiece = distribution(generator); //rand() % 7;      // We initialize the current piece randomly
+  int nNextPiece = distribution(generator); //rand() % 7;         // And also the next piece as well
   int nCurrentRotation = 0;            // All pieces start in their unrotated state
   int nCurrentX = nFieldWidth / 2 - 2; // This will put the piece centered in the field
   int nCurrentY = 0;                   // And at the first line. The (0,0) of the piece is the upper left cell
@@ -327,7 +332,7 @@ int main(int argc, char** argv) {
         nCurrentY = 0;
         nCurrentRotation = 0;
         nCurrentPiece = nNextPiece; // The next piece becomes the current
-        nNextPiece = rand() % 7;    // And we sort a new one
+        nNextPiece = distribution(generator); //rand() % 7;    // And we sort a new one
 
         // If piece does not fit, game over
         bGameOver = !DoesPieceFit(nCurrentPiece, nCurrentRotation, nCurrentX, nCurrentY);
