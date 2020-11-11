@@ -9,7 +9,7 @@
       "name": "Debug",
       "type": "gdb",
       "request": "launch",
-      "target": "./tetriscle",
+      "target": "./tetris-cle",
       "cwd": "${workspaceRoot}",
       "terminal": "",
       "valuesFormatting": "parseText"
