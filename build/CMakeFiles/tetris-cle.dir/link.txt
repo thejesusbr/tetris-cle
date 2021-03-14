@@ -1,0 +1,1 @@
+/usr/bin/c++ -g -rdynamic CMakeFiles/tetris-cle.dir/src/main.cpp.o -o tetris-cle  -lncursesw 

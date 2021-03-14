@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/wendell/Projetos/tetris-cle/src/main.cpp
+iostream
+-
+thread
+-
+chrono
+-
+vector
+-
+ncurses.h
+-
+cmath
+-
+random
+-
+

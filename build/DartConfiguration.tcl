@@ -4,8 +4,8 @@
 
 
 # Configuration directories and files
-SourceDirectory: /home/wendell/Projetos/tetriscle
-BuildDirectory: /home/wendell/Projetos/tetriscle/build
+SourceDirectory: /home/wendell/Projetos/tetris-cle
+BuildDirectory: /home/wendell/Projetos/tetris-cle/build
 
 # Where to place the cost data store
 CostDataFile: 
@@ -14,7 +14,7 @@ CostDataFile:
 Site: wfsd-lenovo-320
 
 # Build name is osname-revision-compiler, i.e. Linux-2.4.2-2smp-c++
-BuildName: Linux-g++
+BuildName: Linux-c++
 
 # Subprojects
 LabelsForSubprojects: 
@@ -26,8 +26,8 @@ SubmitURL: http://
 NightlyStartTime: 00:00:00 EDT
 
 # Commands for the build/test/submit cycle
-ConfigureCommand: "/usr/bin/cmake" "/home/wendell/Projetos/tetriscle"
-MakeCommand: /usr/bin/cmake --build . --config "${CTEST_CONFIGURATION_TYPE}"
+ConfigureCommand: "/usr/bin/cmake" "/home/wendell/Projetos/tetris-cle"
+MakeCommand: /usr/bin/cmake --build . --config "${CTEST_CONFIGURATION_TYPE}" -- -i
 DefaultCTestConfigurationType: Release
 
 # version control
@@ -62,7 +62,7 @@ UpdateOptions:
 UpdateType: git
 
 # Compiler info
-Compiler: /opt/cuda/bin/g++
+Compiler: /usr/bin/c++
 CompilerVersion: 10.2.0
 
 # Dynamic analysis (MemCheck)

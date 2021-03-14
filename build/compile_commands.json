@@ -1,7 +1,7 @@
 [
 {
-  "directory": "/home/wendell/Projetos/tetriscle/build",
-  "command": "/opt/cuda/bin/g++ -g -o CMakeFiles/tetris-cle.dir/src/main.cpp.o -c /home/wendell/Projetos/tetriscle/src/main.cpp",
-  "file": "/home/wendell/Projetos/tetriscle/src/main.cpp"
+  "directory": "/home/wendell/Projetos/tetris-cle/build",
+  "command": "/opt/cuda/bin/g++ -g -o CMakeFiles/tetris-cle.dir/src/main.cpp.o -c /home/wendell/Projetos/tetris-cle/src/main.cpp",
+  "file": "/home/wendell/Projetos/tetris-cle/src/main.cpp"
 }
 ]

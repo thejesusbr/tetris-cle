@@ -9,7 +9,7 @@
       "name": "Debug",
       "type": "gdb",
       "request": "launch",
-      "target": "./tetris-cle",
+      "target": "./build/tetris-cle",
       "cwd": "${workspaceRoot}",
       "terminal": "",
       "valuesFormatting": "parseText"
