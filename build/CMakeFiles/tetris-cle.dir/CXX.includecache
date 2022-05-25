@@ -7,18 +7,18 @@
 #IncludeRegexTransform: 
 
 /home/wendell/Projetos/tetris-cle/src/main.cpp
-iostream
--
-thread
--
 chrono
--
-vector
--
-ncurses.h
 -
 cmath
 -
+iostream
+-
+ncurses.h
+-
 random
+-
+thread
+-
+vector
 -
 
