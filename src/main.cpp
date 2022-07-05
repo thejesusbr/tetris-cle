@@ -141,9 +141,11 @@ int main(int argc, char **argv) {
   init_pair(PAUSE_COLOR, COLOR_YELLOW, COLOR_BLUE);
   refresh(); /* Refresh the main screen */
 
-  // Creating the main screen
-  screen = create_newwin(nScreenHeight, nScreenWidth, 0, 0);
+  // Initial coordinates for centering the window
+  int initY = 5, initX = (getmaxx(stdscr) - nScreenWidth) >> 1;
 
+  // Creating the main screen
+  screen = create_newwin(nScreenHeight, nScreenWidth, initY, initX);
   mvwprintw(screen, 0, 7, "TETRIS Command Line Edition");
   mvwaddch(screen, nScreenHeight - 3, 2, ACS_LARROW);
   mvwaddch(screen, nScreenHeight - 3, 4, ACS_DARROW);
@@ -152,16 +154,16 @@ int main(int argc, char **argv) {
   mvwprintw(screen, nScreenHeight - 2, 2, "space to use special, q to quit.");
 
   // Creating a window to display the score
-  scoreScreen = create_newwin(3, 12, 2, 17);
+  scoreScreen = create_newwin(3, 12, 2 + initY, 17 + initX);
   mvwprintw(scoreScreen, 0, 1, "Score");
   mvwprintw(scoreScreen, 1, 10, "0");
 
   // Creating a window to display the next piece
-  nextPieceScreen = create_newwin(7, 8, 5, 17);
+  nextPieceScreen = create_newwin(7, 8, 5 + initY, 17 + initX);
   mvwprintw(nextPieceScreen, 0, 1, "Next");
 
   // Creating a window to display available specials
-  specialScreen = create_newwin(3, 9, 5, 26);
+  specialScreen = create_newwin(3, 9, 5 + initY, 26 + initX);
   mvwprintw(specialScreen, 0, 1, "Special");
 
   // Initializing random engine

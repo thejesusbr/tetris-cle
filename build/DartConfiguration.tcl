@@ -64,7 +64,7 @@ UpdateType: git
 
 # Compiler info
 Compiler: /opt/cuda/bin/g++
-CompilerVersion: 11.2.0
+CompilerVersion: 11.3.0
 
 # Dynamic analysis (MemCheck)
 PurifyCommand: 
